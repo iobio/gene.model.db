@@ -12,20 +12,27 @@ import java.sql.*;
 
 public class App {
 	
-	private static String gffFileName = "/Users/tonyd/Downloads/ref_GRCh37.p13_top_level.gff3";
-	private static String dbName = "gene.iobio.db";
-	private static String geneModelSource = "refseq";  // refseq or gencode
+	private static String gffFileName     = "/Users/tonyd/work/geneModelGffImporter/data/gencode.v19.annotation.gff3";
+	private static String dbName          = "gene.iobio.db";
+	private static String geneModelSource = "gencode";  // refseq or gencode
+	private static String species         = "homo_sapiens";
+	private static String build           = "GRCh37";  // GRCh37 or GRCh38
 
-	private static String ID = "ID";
-	private static String Name = "Name";
-	private static String Alias = "Alias";
+	private static String ID     = "ID";
+	private static String Gene_name       = geneModelSource.equals("refseq") ?  "Name" : "gene_name";
+	private static String Transcript_id   = geneModelSource.equals("refseq") ?  "Name" : "transcript_id";
+	private static String Gene_type       = geneModelSource.equals("refseq") ?  "type" : "gene_type";
+	private static String Transcript_type = geneModelSource.equals("refseq") ?  "type" : "transcript_type";
+	private static String Alias  = "Alias";
 	private static String Parent = "Parent";
 	private static String Target = "Target";
-	private static String Gap = "Gap";
+	private static String Gap    = "Gap";
 	private static String Derives_from = "Derives_from";
-	private static String Note = "Note";
+	private static String Note   = "Note";
 	private static String dbxref = "Dbxref";
 	private static String Ontology_term = "Ontology_term";
+
+	private static String chrHeaderRec = geneModelSource.equals("refseq") ? "##sequence-region NC" : "##sequence-region chr";
 	
 	private static HashMap<String, String> genePrefixMap = new HashMap<String, String>();
 	private static HashMap<String, String> transcriptPrefixMap = new HashMap<String, String>(); 
@@ -58,7 +65,7 @@ public class App {
 			String line = "";			
 		    while(s.hasNext()) {
 		    	line = s.nextLine();
-		    	if (line.startsWith("##sequence-region NC")) {
+		    	if (line.startsWith(chrHeaderRec)) {
 		    		
 		    		if (ref != null) {
 			    		loadData(c, geneMap, transcriptMap);		    			
@@ -118,55 +125,80 @@ public class App {
 	}
 	
 	static void initMaps() {
-		seqIdMap.put("NC_000001.10", "chr1");	
-		seqIdMap.put("NC_000002.11", "chr2");
-		seqIdMap.put("NC_000003.11", "chr3");
-		seqIdMap.put("NC_000004.11", "chr4");
-		seqIdMap.put("NC_000005.9",  "chr5");
-		seqIdMap.put("NC_000006.11", "chr6");
-		seqIdMap.put("NC_000007.13", "chr7");
-		seqIdMap.put("NC_000008.10", "chr8");
-		seqIdMap.put("NC_000009.11", "chr9");
-		seqIdMap.put("NC_000010.10", "chr10");
-		seqIdMap.put("NC_000011.9", "chr11");
-		seqIdMap.put("NC_000012.11", "chr12");
-		seqIdMap.put("NC_000013.10", "chr13");
-		seqIdMap.put("NC_000014.8", "chr14");
-		seqIdMap.put("NC_000015.9", "chr15");
-		seqIdMap.put("NC_000016.9", "chr16");
-		seqIdMap.put("NC_000017.10", "chr17");
-		seqIdMap.put("NC_000018.9", "chr18");
-		seqIdMap.put("NC_000019.9", "chr19");
-		seqIdMap.put("NC_000020.10", "chr20");	
-		seqIdMap.put("NC_000021.8", "chr21");
-		seqIdMap.put("NC_000022.10", "chr22");
-		seqIdMap.put("NC_000023.10", "chrY");
-		seqIdMap.put("NC_000024.9", "chrX");
-		seqIdMap.put("NC_012920.1", "chrMT");
+		if (geneModelSource.equals("refseq") && build.equals("GRCh37")) {
+			seqIdMap.put("NC_000001.10", "chr1");	
+			seqIdMap.put("NC_000002.11", "chr2");
+			seqIdMap.put("NC_000003.11", "chr3");
+			seqIdMap.put("NC_000004.11", "chr4");
+			seqIdMap.put("NC_000005.9",  "chr5");
+			seqIdMap.put("NC_000006.11", "chr6");
+			seqIdMap.put("NC_000007.13", "chr7");
+			seqIdMap.put("NC_000008.10", "chr8");
+			seqIdMap.put("NC_000009.11", "chr9");
+			seqIdMap.put("NC_000010.10", "chr10");
+			seqIdMap.put("NC_000011.9", "chr11");
+			seqIdMap.put("NC_000012.11", "chr12");
+			seqIdMap.put("NC_000013.10", "chr13");
+			seqIdMap.put("NC_000014.8", "chr14");
+			seqIdMap.put("NC_000015.9", "chr15");
+			seqIdMap.put("NC_000016.9", "chr16");
+			seqIdMap.put("NC_000017.10", "chr17");
+			seqIdMap.put("NC_000018.9", "chr18");
+			seqIdMap.put("NC_000019.9", "chr19");
+			seqIdMap.put("NC_000020.10", "chr20");	
+			seqIdMap.put("NC_000021.8", "chr21");
+			seqIdMap.put("NC_000022.10", "chr22");
+			seqIdMap.put("NC_000023.10", "chrY");
+			seqIdMap.put("NC_000024.9", "chrX");
+			seqIdMap.put("NC_012920.1", "chrMT");
+		} else if (geneModelSource.equals("refseq") && build.equals("GRCh38")) {
+			seqIdMap.put("NC_000001.11", "chr1");
+			seqIdMap.put("NC_000002.12", "chr2");
+			seqIdMap.put("NC_000003.12", "chr3");
+			seqIdMap.put("NC_000004.12", "chr4");
+			seqIdMap.put("NC_000005.10", "chr5");
+			seqIdMap.put("NC_000006.12", "chr6");
+			seqIdMap.put("NC_000007.14", "chr7");
+			seqIdMap.put("NC_000008.11", "chr8");
+			seqIdMap.put("NC_000009.12", "chr9");
+			seqIdMap.put("NC_000010.11", "chr10");
+			seqIdMap.put("NC_000011.10", "chr11");
+			seqIdMap.put("NC_000012.12", "chr12");
+			seqIdMap.put("NC_000013.11", "chr13");
+			seqIdMap.put("NC_000014.9", "chr14");
+			seqIdMap.put("NC_000015.10", "chr15");
+			seqIdMap.put("NC_000016.10", "chr16");
+			seqIdMap.put("NC_000017.11", "chr17");
+			seqIdMap.put("NC_000018.10", "chr18");
+			seqIdMap.put("NC_000019.10", "chr19");
+			seqIdMap.put("NC_000020.11", "chr20");
+			seqIdMap.put("NC_000021.9", "chr21");
+			seqIdMap.put("NC_000022.11", "chr22");
+			seqIdMap.put("NC_000023.11", "chrY");
+			seqIdMap.put("NC_000024.10", "chrX");
+			seqIdMap.put("NC_012920.1", "chrMT");
+		}
+
 	}
 	
 	static void loadData(Connection conn, Map<String, Feature>geneMap, Map<String, Feature>transcriptMap) {
 		for( String geneId : geneMap.keySet()) {
 			Feature gene = geneMap.get(geneId);
-			//System.out.println(gene.attributeMap.get(Name) + "\t" + gene.attributeMap.get(ID));
 			insertGene(conn, gene);
 			for (Feature tx : gene.childFeatures) {				
 				Feature transcript = transcriptMap.get(tx.attributeMap.get(ID));
 				if (transcript != null) {					
 					insertTranscript(conn, gene, transcript);
-					//System.out.println("\t" + transcript.attributeMap.get(ID) + "\t" + transcript.attributeMap.get(Name) + "\t" +  transcript.attributeMap.get(Parent));
-					//for (Feature childFeature : transcript.childFeatures) {
-						//System.out.println("\t\t" + childFeature.type + " " + childFeature.start + " " + childFeature.end + " " + childFeature.attributeMap.get(Parent));
-					//}
 				} else {
-					System.err.println("Cannot find transcript " + tx.attributeMap.get(ID) + " " + tx.attributeMap.get(Name) + " " + tx.attributeMap.get(Parent));
+					System.err.println("Cannot find transcript " + tx.attributeMap.get(ID) + " " + tx.attributeMap.get(Transcript_id) + " " + tx.attributeMap.get(Parent));
 				}
 			}
 		}
 	}
 	
 	static void insertGene(Connection conn, Feature gene) {
-		String chr = seqIdMap.get(gene.seqid);
+		System.out.println("inserting gene " + gene.attributeMap.get(Gene_name));
+		String chr = geneModelSource.equals("refseq") ? seqIdMap.get(gene.seqid) : gene.seqid;
 		String transcripts = "";		
 		for (Feature transcript : gene.childFeatures) {	
 			if (transcripts.length() == 0) {
@@ -174,7 +206,7 @@ public class App {
 			} else {
 				transcripts += ",";
 			}
-			transcripts += "\"" + transcript.attributeMap.get(Name) + "\"";
+			transcripts += "\"" + transcript.attributeMap.get(Transcript_id) + "\"";
 		}
 		if (transcripts.length() > 0) {
 			transcripts += "]";
@@ -183,7 +215,7 @@ public class App {
 		try {
 			stmt = conn.createStatement();
 			String sql = "INSERT INTO genes "
-		      		+ " (chr, seqid, annotation_source, feature_type, start, end, score, strand, phase, gene_name, gene_type, gene_status, level, transcripts, source) " 
+		      		+ " (chr, seqid, annotation_source, feature_type, start, end, score, strand, phase, gene_name, gene_type, gene_status, level, transcripts, source, species, build) " 
 		            + "VALUES (" 
 		      		+ "'" + chr + "'" + ","
 		      		+ "'" + gene.seqid + "'" + ","
@@ -194,12 +226,14 @@ public class App {
 		      		+ "\".\"" + ","  // score
 		      		+ "'" + gene.strand + "'" + "," 
 		      		+ "'" + gene.phase + "'" + ","
-		      		+ "'" + gene.attributeMap.get(Name) + "'" + ","
-		      		+ "'" + (gene.type == null ? "" : gene.type) + "'" + ","      // gene type
+		      		+ "'" + gene.attributeMap.get(Gene_name) + "'" + ","
+		      		+ "'" + (gene.type == null ? "" : gene.attributeMap.get(Gene_type)) + "'" + ","      // gene type
 		      		+ "\".\"" + "," //status
 		      		+ "\".\"" + "," // level
 		      		+ "'" + transcripts + "'"  + "," 
-		      		+ "'" + geneModelSource + "'" 
+		      		+ "'" + geneModelSource + "'"  + "," 
+		      		+ "'" + species + "'"  + "," 
+		      		+ "'" + build + "'"  
 		            + ");"; 
 		    stmt.executeUpdate(sql);
 		} catch (SQLException e) {
@@ -217,7 +251,7 @@ public class App {
 			} else {
 				features += ",";
 			}
-			String chr = seqIdMap.get(transcript.seqid);
+			String chr = geneModelSource.equals("refseq") ? seqIdMap.get(transcript.seqid) : transcript.seqid;
 			features += "{\"chr\":" + "\"" + chr + "\","
 					 +  "\"seqid\":" + "\"" + feature.seqid + "\","
 					 +  "\"annotation_source\":" + "\"" + feature.source + "\","
@@ -227,17 +261,18 @@ public class App {
 					 +  "\"score\":" + "\"" + "." + "\","
 					 +  "\"strand\":" + "\"" + feature.strand + "\","
 					 +  "\"phase\":" + "\"" + feature.phase + "\","
-					 +  "\"transcript_id\":" + "\"" + transcript.attributeMap.get(Name) + "\"}";
+					 +  "\"transcript_id\":" + "\"" + transcript.attributeMap.get(Transcript_id) + "\"}";
 		}
 		if (features.length() > 0) {
 			features += "]";
 		}
 		Statement stmt;
 		try {
-			String chr = seqIdMap.get(transcript.seqid);
+			System.out.println("   transcript " + transcript.attributeMap.get(Transcript_id));
+			String chr = geneModelSource.equals("refseq") ? seqIdMap.get(transcript.seqid) : transcript.seqid;
 			stmt = conn.createStatement();
 			String sql = "INSERT INTO transcripts "
-		      		+ " (chr, seqid, annotation_source, feature_type, start, end, score, strand, phase, transcript_id, gene_name, transcript_type, transcript_status, level, features, source) " 
+		      		+ " (chr, seqid, annotation_source, feature_type, start, end, score, strand, phase, transcript_id, gene_name, transcript_type, transcript_status, level, features, source, species, build) " 
 		            + "VALUES (" 
 		      		+ "'" + chr + "'" + ","
 		      		+ "'" + transcript.seqid + "'" + ","
@@ -248,14 +283,16 @@ public class App {
 		      		+ "\".\"" + ","  // score
 		      		+ "'" + transcript.strand + "'" + "," 
 		      		+ "'" + transcript.phase + "'" + ","
-		      		+ "'" + transcript.attributeMap.get(Name) + "'" + ","
-		      		+ "'" + gene.attributeMap.get(Name) + "'" + ","
-		      		+ "'" + transcript.type + "'" + ","
+		      		+ "'" + transcript.attributeMap.get(Transcript_id) + "'" + ","
+		      		+ "'" + gene.attributeMap.get(Gene_name) + "'" + ","
+		      		+ "'" + transcript.attributeMap.get(Transcript_type) + "'" + ","
 		      		+ "\".\"" + "," //status
 		      		+ "\".\"" + "," // level
 		      		+ "'" + features + "'"  + ","
-		      		+ "'" + geneModelSource + "'" 
-		            + ");"; 
+		      		+ "'" + geneModelSource + "'"  + ","
+		      		+ "'" + species + "'"  + "," 
+		      		+ "'" + build + "'"   
+		      		+ ");"; 
 		    stmt.executeUpdate(sql);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block			
