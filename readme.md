@@ -39,7 +39,10 @@ These are the steps involved in creating the gene.iobio.db
 	   GRCh38 transcripts and the ccds_id for GRCh37 transcripts
 
 5.  Update the xref tables to map gencode transcripts to refseq transcripts
-    -  For GRCh38, use UCSC table browser. (see doc/howto_ucsc_table_browser_xref_transcripts.png)
+    -  For GRCh38, use UCSC table browser. 
+ <p align="center">
+  <img src="doc/howto_ucsc_table_browser_xref_transcripts.png"/>
+ /p>    
     -  For GRCh37, use Ensembl Biomart.  (see doc/howto_ensembl_biomart_xref_transcripts.png)
     -  Use excel to convert tsv to csv
     -  Now run sql script insert_transcripts_xref.sql in gene.iobio.db
