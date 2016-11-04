@@ -45,7 +45,7 @@ These are the steps involved in creating the gene.iobio.db
 		</p>    
     -  For GRCh37, use Ensembl Biomart.  
 		<p align="center">
-		  <img src="doc/howto_ensembl_biomart_xref_transcripts.png" width="550"/>
+		  <img src="doc/howto_ensembl_biomart_xref_transcripts.png" width="700"/>
 		</p>    
     -  Use excel to convert tsv to csv
     -  Now run sql script insert_transcripts_xref.sql in gene.iobio.db
