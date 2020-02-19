@@ -148,8 +148,8 @@ public class App {
 			seqIdMap.put("NC_000020.10", "chr20");	
 			seqIdMap.put("NC_000021.8", "chr21");
 			seqIdMap.put("NC_000022.10", "chr22");
-			seqIdMap.put("NC_000023.10", "chrY");
-			seqIdMap.put("NC_000024.9", "chrX");
+			seqIdMap.put("NC_000023.10", "chrX");
+			seqIdMap.put("NC_000024.9", "chrY");
 			seqIdMap.put("NC_012920.1", "chrMT");
 		} else if (geneModelSource.equals("refseq") && build.equals("GRCh38")) {
 			seqIdMap.put("NC_000001.11", "chr1");
@@ -174,8 +174,8 @@ public class App {
 			seqIdMap.put("NC_000020.11", "chr20");
 			seqIdMap.put("NC_000021.9", "chr21");
 			seqIdMap.put("NC_000022.11", "chr22");
-			seqIdMap.put("NC_000023.11", "chrY");
-			seqIdMap.put("NC_000024.10", "chrX");
+			seqIdMap.put("NC_000023.11", "chrX");
+			seqIdMap.put("NC_000024.10", "chrY");
 			seqIdMap.put("NC_012920.1", "chrMT");
 		}
 
