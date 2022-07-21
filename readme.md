@@ -95,7 +95,7 @@ The first field (hg38.knownCanonical.transcript) is the id used from knownCanoni
 Please do make these selections independently. Here is a session to compare your steps against to help see the output: http://genome.ucsc.edu/cgi-bin/hgTables?hgS_doOtherUser=submit&hgS_otherUserName=Brian%20Lee&hgS_otherUserSessionName=hg38.refGene.canonical
 ```
 
-	 	Remember to join to tables to get the gencode transcript id (align id)
+- 	Remember to join to tables to get the gencode transcript id (align id)
 	-  Use excel to convert tsv to csv
 	-  For GRCh37, you can get the ccds_id from the UCSC table browser, using a similar technique described above. 
 	<p align="center">
@@ -104,6 +104,8 @@ Please do make these selections independently. Here is a session to compare your
 	 
 	-  Use excel to convert tsv to csv
 	-  Run sql script sql/update_transcripts_for_canonical.sql which will update both the is_canonical for GRCh38 transcripts and the ccds_id for GRCh37 transcripts
+
+
 
 
 5.  Update the xref tables to map gencode transcripts to refseq transcripts
