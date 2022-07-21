@@ -62,7 +62,7 @@ uc001ggs.5    uc001ggs.5    ENST00000367772.7    29    NM_181093    chr1    -   
 The first field (hg38.knownCanonical.transcript) is the id used from knownCanonical that is driving the selection of all the other data. The second two fields are the entire knownToEnsembl table that exists to provide the related ENST id (ENST00000367772.7), the remaining fields are all the fields from the refGene table that correspond to the entries in the knownCanonical table.
 
 Please do make these selections independently. Here is a session to compare your steps against to help see the output: http://genome.ucsc.edu/cgi-bin/hgTables?hgS_doOtherUser=submit&hgS_otherUserName=Brian%20Lee&hgS_otherUserSessionName=hg38.refGene.canonical
-```
+
 
 In a new browser window navigate to the Table Browser: http://genome.ucsc.edu/cgi-bin/hgTables
 
