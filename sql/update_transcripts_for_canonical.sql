@@ -1,11 +1,15 @@
+drop table gencode_grch37_transcript_ccds;
 CREATE TABLE gencode_grch37_transcript_ccds (gene_name text, transcript_id text, ccdsId text, level text, transcript_class text);
-CREATE TABLE gencode_grch38_transcript_canonical (chr text, start int, end int, gene_name text, transcript_id_refseq text, transcript_id text);
 CREATE INDEX idx_gencode_grch37_transcript_ccds on gencode_grch37_transcript_ccds(transcript_id);
+.separator ","
+.import /users/tony/work/gene.model.db/data/canonical/Gencode19_GRCh37_CCDS_from_UCSC_hgTables.csv gencode_grch37_transcript_ccds
+
+drop table gencode_grch38_transcript_canonical;
+CREATE TABLE gencode_grch38_transcript_canonical (chr text, start int, end int, transcript_id text, gene_name text, transcript_id_refseq text );
 CREATE INDEX idx_gencode_grch38_transcript_canonical on gencode_grch38_transcript_canonical(transcript_id);
 
 .separator ","
-.import /users/tonyd/work/geneModelGffImporter/data/Gencode19_GRCh37_CCDS_from_UCSC_hgTables.csv gencode_grch37_transcript_ccds
-.import /users/tonyd/work/geneModelGffImporter/data/Gencode24_GRCh38_knownCanonical_from_UCSC_hgTables.csv gencode_grch38_transcript_canonical
+.import /users/tony/work/gene.model.db/data/canonical/Gencode41_GRCh38_knownCanonical_from_UCSC_hgTables.csv gencode_grch38_transcript_canonical
 
 
 UPDATE transcripts
@@ -40,3 +44,5 @@ WHERE
         WHERE gencode_grch38_transcript_canonical.transcript_id = transcripts.transcript_id 
         AND transcripts.build = 'GRCh38'  and transcripts.source = 'gencode'
     ) ;     
+
+

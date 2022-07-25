@@ -1,5 +1,5 @@
 var sqlite3 = require('sqlite3').verbose();
-var db      = new sqlite3.Database('./gene.iobio.db');
+var db      = new sqlite3.Database('/users/tony/work/gene.model.db/data/gene.iobio.db');
 var extend  = require('node.extend');
 
 if (process.argv.length < 5) {
@@ -15,11 +15,25 @@ console.log("source " + source);
 var build = process.argv[4];
 console.log("build " + build);
 
-var sqlString = "select transcript_id, source, gene_name, features from transcripts "
-+ " where source = '" + source + "'" 
-+ " and build = '" + build + "'" 
-+ " and chr = '" + chr + "'" 
-+ " order by gene_name, transcript_id";
+var sqlString = "";
+
+db.run("PRAGMA journal_mode = WAL")
+db.run("PRAGMA synchronous = NORMAL")
+
+if (chr != 'other') {
+	sqlString = "select transcript_id, source, gene_name, features from transcripts "
+	+ " where source = '" + source + "'" 
+	+ " and build = '" + build + "'" 
+	+ " and chr = '" + chr + "'" 
+	+ " order by gene_name, transcript_id";
+
+} else {
+	sqlString = "select transcript_id, source, gene_name, features from transcripts "
+	+ " where source = '" + source + "'" 
+	+ " and build = '" + build + "'" 
+	+ " and chr not in ( 'chr1','chr2','chr3','chr4','chr5','chr6','chr7','chr8','chr9','chr10','chr11','chr12','chr13','chr14','chr15','chr16','chr17','chr18','chr19','chr20','chr21','chr22','chrX','chrY','chrMT','chrM')"
+	+ " order by gene_name, transcript_id";
+}
 
 var counter = 1;
 db.all(sqlString,function(err,rows) {
@@ -37,6 +51,7 @@ db.all(sqlString,function(err,rows) {
 				var updateStmt = "update transcripts set features =  ?"
 				 + " where transcript_id = ?"
 				 + " and gene_name = ?" 
+				 + " and species = 'homo_sapiens'"
 				 + " and source = ?" 
                  + " and build = ?";
 				db.run(updateStmt, 

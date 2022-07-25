@@ -9,6 +9,7 @@ do
    node determineUTR.js $i gencode GRCh37
 done
 
+
 echo "gencode GRCh38"
 for i in "${refs[@]}"
 do
@@ -24,6 +25,7 @@ do
    # run determineUTR.js for each chromosome
    node determineUTR.js $i refseq GRCh37
 done
+node determineUTR.js other refseq GRCh37
 
 echo "refseq GRCh38"
 for i in "${refs[@]}"
@@ -32,3 +34,4 @@ do
    # run determineUTR.js for each chromosome
    node determineUTR.js $i refseq GRCh38
 done
+node determineUTR.js other refseq GRCh38
