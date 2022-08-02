@@ -11,7 +11,6 @@ CREATE INDEX idx_grch38_xref2 on GRCh38_xref_gencode_to_refseq(gencode_id);
 CREATE INDEX idx_grch38_xref3 on GRCh38_xref_gencode_to_refseq(gene_name);
 
 CREATE INDEX idx_transcripts_gene_name on transcripts(gene_name);
-CREATE INDEX idx_transcripts_build on transcripts(build);
 
 .separator ","
 .import /users/tony/work/gene.model.db/data/xref/GRCh37_xref_gencode_to_refseq.csv GRCh37_xref_gencode_to_refseq
