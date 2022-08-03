@@ -63,10 +63,24 @@ These are the steps involved in creating the gene.iobio.db
       ```
       sh scripts/verifyUTR.sh
       ```
-      You should see 2 lines for the UTR features of the canonical transcript for gene RAI1
+      You should see 2 lines for the UTR features of the canonical transcript for gene RAI1.
+      Compare the transcript counts of those with UTRs to the total number of transcripts
+      to make sure that most of the transcripts have UTRs.
       ```
       "feature_type":"UTR"
       "feature_type":"UTR"
+
+      Number of transcripts 
+      gencode|GRCh37|252748
+      gencode|GRCh38|251199
+      refseq|GRCh37|81768
+      refseq|GRCh38|155012
+
+      Number of transcripts with UTR features
+      gencode|GRCh37|248655
+      gencode|GRCh38|247158
+      refseq|GRCh37|81458
+      refseq|GRCh38|154587
       ```
 
 
