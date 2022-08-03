@@ -27,16 +27,26 @@ These are the steps involved in creating the gene.iobio.db
        ```
        - The class files will be created in the target/classes directory.
     -  Execute scripts/run_gff_importer.sh, which will import the gffs for each build an source. (This should take approximately 5 mins for each source/build to run)
-      ```
-      sh scripts/run_gff_importer.sh
-      ```
-    After the import, the script will output the gene counts by source and build. Verify that the gene counts look correct. Here is the output from the most
-    recent run.
+     ```
+     sh scripts/run_gff_importer.sh
+     ```
+    After the import, run the script to show the gene and transcript counts. Here is the output from the most recent run.
+     ```
+     sh scripts/verify_transcript_counts.sh
+     ```
+
      ```  
-         gencode|GRCh37|63641
-         gencode|GRCh38|61815
-         refseq|GRCh37|31508
-         refseq|GRCh38|47757
+     GENE COUNTS
+     gencode|GRCh37|63641
+     gencode|GRCh38|61815
+     refseq|GRCh37|31508
+     refseq|GRCh38|47757
+
+     TRANSCRIPT COUNTS
+     gencode|GRCh37|252748
+     gencode|GRCh38|251199
+     refseq|GRCh37|81768
+     refseq|GRCh38|155012
      ```
 4. Update the gene.iobio.db transcripts table to specify the UTR features, which are not included in the GFF3, 
    but can be determined by reading the EXON and CDS features.
