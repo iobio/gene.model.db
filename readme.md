@@ -207,10 +207,12 @@ These are the steps involved in creating the gene.iobio.db
  7.  Record MANE transcripts
     - Download the MANE gff [here](https://ftp.ncbi.nlm.nih.gov/refseq/MANE/MANE_human/)
     - Extract the transcript lines from the 'gff', passing in the path to the MANE gff
+
       ```
-      sh scripts/extract_mane_transcripts.sh data/mane/MANE.GRCh38.v1.0.ensembl_genomic.gff > data/mane/transcripts.csv
+      sh scripts/extract_mane_transcripts.sh data/mane/MANE.GRCh38.v1.0.ensembl_genomic.gff 
+      > data/mane/transcripts.csv
+      ```
       
-      ```
     - Run sql script sql/update_mane_transcripts.sql which will update is_mane_select for GRCh38 transcripts. 
       ```
       sqlite3 gene.iobio.db 
