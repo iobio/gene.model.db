@@ -22,10 +22,10 @@ These are the steps involved in creating the gene.iobio.db
        - Install [Java JDK](https://www.oracle.com/java/technologies/downloads/)
        - Install [Apache Maven](https://maven.apache.org/)
        - From the command line, build the project
-       ```
-       mvn install
-       ```
-       - The class files will be created in the target/classes directory.
+     ```
+     mvn install
+     ```
+       
     -  Execute scripts/run_gff_importer.sh, which will import the gffs for each build an source. (This should take approximately 5 mins for each source/build to run)
      ```
      sh scripts/run_gff_importer.sh
