@@ -38,9 +38,6 @@ These are the steps involved in creating the gene.iobio.db
          refseq|GRCh37|31508
          refseq|GRCh38|47757
 		```
-
-
-
 4. Update the gene.iobio.db transcripts table to specify the UTR features, which are not included in the GFF3, 
    but can be determined by reading the EXON and CDS features.
    -  This is a long running update statement, so it works better to update one reference (for a build) at a time.
