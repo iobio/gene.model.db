@@ -5,7 +5,7 @@ CREATE INDEX idx_grch37_xref2 on GRCh37_xref_gencode_to_refseq(gencode_id);
 CREATE INDEX idx_grch37_xref3 on GRCh37_xref_gencode_to_refseq(gene_name);
 
 drop table GRCh38_xref_gencode_to_refseq;
-CREATE TABLE GRCh38_xref_gencode_to_refseq (gencode_id text, gene_name text, refseq_id text);
+CREATE TABLE GRCh38_xref_gencode_to_refseq (gene_name text,refseq_id text ,gencode_id text ,species text, build text);
 CREATE INDEX idx_grch38_xref1 on GRCh38_xref_gencode_to_refseq(refseq_id);
 CREATE INDEX idx_grch38_xref2 on GRCh38_xref_gencode_to_refseq(gencode_id);
 CREATE INDEX idx_grch38_xref3 on GRCh38_xref_gencode_to_refseq(gene_name);
@@ -13,9 +13,11 @@ CREATE INDEX idx_grch38_xref3 on GRCh38_xref_gencode_to_refseq(gene_name);
 CREATE INDEX idx_transcripts_gene_name on transcripts(gene_name);
 
 .separator ","
-.import /users/tony/work/gene.model.db/data/xref/GRCh37_xref_gencode_to_refseq.csv GRCh37_xref_gencode_to_refseq
-.import /users/tony/work/gene.model.db/data/xref/GRCh38_xref_gencode_to_refseq.csv GRCh38_xref_gencode_to_refseq
+.import data/xref/GRCh37_xref_gencode_to_refseq.csv GRCh37_xref_gencode_to_refseq
+.import data/xref/GRCh38_xref_gencode_to_refseq.csv GRCh38_xref_gencode_to_refseq
 
+
+delete from xref_transcript;
 
 insert into xref_transcript(gene_name, refseq_id, gencode_id, species, build)
 select gene_name, refseq_id, gencode_id, 'homo_sapiens', 'GRCh38'
@@ -31,5 +33,8 @@ from GRCh37_xref_gencode_to_refseq as x  join transcripts as t
     and t.source = 'gencode'
     and t.build = 'GRCh37'
 where x.refseq_id != '';
+
+drop table GRCh37_xref_gencode_to_refseq;
+drop table GRCh38_xref_gencode_to_refseq;
 
 

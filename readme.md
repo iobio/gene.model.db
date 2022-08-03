@@ -16,41 +16,42 @@ These are the steps involved in creating the gene.iobio.db
 
 4.  Populate the gene.iobio.db from the gff3 files for each genome build
     
-    -  Modify src/geneModelGffImporter/App.java to point to the correct gff3 file and specify the correct build
-    ```
-    private static String gffFileName     = "/Users/tony/work/gene.model.db/data/gencode/gencode.v41.annotation.gff3";
-	private static String geneModelSource = "gencode";  // refseq or gencode
-	private static String build           = "GRCh38";  // GRCh37 or GRCh38
-
-	```
     -  Compile the java app.  
        - Install Java JDK https://www.oracle.com/java/technologies/downloads/
        - Install Apache Maven https://maven.apache.org/
        - From the command line, build the project
        ```mvn install```
        - The class files will be created in the target/classes directory.
-    -  Run the java app.  (This should take approximately 5 mins to run.)
-      ```java -classpath target/geneModelGffImporter-0.0.1-SNAPSHOT.jar:sqlite-jdbc-3.8.11.2.jar geneModelGffImporter.App```
-    -  You can verify if the genes and transcripts where loaded. For example, this sql statement will show you how many genes were inserted for build GRCh38 from Gencode import.
-    ```sqlite3 gene.iobio.db```
+    -  Execute scripts/run_gff_importer.sh, which will import the gffs for each build an source. (This should take approximately 5 mins for each source/build to run)
+      ```sh scripts/run_gff_importer.sh```
+    -  After the import, the script will output the gene counts by source and build. Verify that the gene counts look correct. Here is the output from the most
+    recent run:
     ```
-    	>select count(*) from gene where build = 'GRCh38' and source = 'gencode';
-    	>.exit
+    	gencode|GRCh37|63641
+		gencode|GRCh38|61815
+		refseq|GRCh37|31508
+		refseq|GRCh38|47757
     ```
-
-    -  Redo the same above steps for any other gff files (for other builds).
 
 
 4. Update the gene.iobio.db transcripts table to specify the UTR features, which are not included in the GFF3, 
    but can be determined by reading the EXON and CDS features.
    -  This is a long running update statement, so it works better to update one reference (for a build) at a time.
    -  Run the bash shell script ./scripts/determineUTR.sh which will run the node.js script to perform the updates.
-      ```cd scripts
-         sh determineUTR.sh
+      ```sh scripts/determineUTR.sh
       ```
 
       When this script finished, both build GRCh37 and GRCh38 will be updated.  Update the .sh script if you
       want to run the updates on other builds.
+
+    - Verify that the UTRs are now present in the features of the transcript
+      ```sh scripts/verifyUTR.sh```
+      You should see 2 lines for the UTR features of the canonical transcript for gene RAI1
+      ```
+      "feature_type":"UTR"
+		"feature_type":"UTR"
+      ```
+
 
 
 5.  Update the canonical information on the gene.iobio.db transcripts.
@@ -136,14 +137,27 @@ Please do make these selections independently. Here is a session to compare your
 	-  Use excel to convert tsv to csv
 	-  Run sql script sql/update_transcripts_for_canonical.sql which will update both the is_canonical for GRCh38 transcripts and the ccds_id for GRCh37 transcripts. 
 		- First, update the .sql script .import lines to reference the files that you downloaded in the ./data/canonical directory
+		- Make sure you are in the root directory where the gene.iobio.db file resides
 		- Run the sql script
-		```cd ..
-		   sqlite3 gene.iobio.db 
+		```sqlite3 gene.iobio.db 
+		```
+
 		 ```
-		 ```
-		   > (copy and paste contents of ./sql/update_transcripts_for_canonical.sql here)
+		   > (copy and paste contents of sql/update_transcripts_for_canonical.sql here)
 		   > .exit
 		 ```
+
+	- Verify the counts 
+		```sh scripts/verify_canonical.sh```
+
+	  Here is the output from the latest run, showing ~62,000 transcripts for build GRCh38 flagged as canonical and ~200 transcripts for build GRCh37 with a CCDS id.:
+	  ```
+	  	IS CANONICAL
+		gencode|GRCh38||189384
+		gencode|GRCh38|true|61815
+		CCDS_ID
+		gencode|GRCh37|207
+		```
 
 
 
@@ -161,6 +175,26 @@ Please do make these selections independently. Here is a session to compare your
 		</p>    
     -  Use excel to convert tsv to csv
     -  Now run sql script insert_transcripts_xref.sql in gene.iobio.db
+      ```cd ..
+		   sqlite3 gene.iobio.db 
+		 ```
+		 ```
+		   > (copy and paste contents of ./sql/insert_transcripts_xref.sql here)
+		   > .exit
+		 ```
+ 	- Verify the counts 
+		```sh scripts/verify_transcripts_xref.sh```
+
+	  Here is the output from the latest run:
+	  ```
+	   XREF GENCODE -> REFSEQ
+		gencode|GRCh37|33407
+		gencode|GRCh38|21233
+		XREF REFSEQ -> GENCODE
+		refseq|GRCh37|34944
+		refseq|GRCh38|68295
+
+	  
 
 
  7.  Record MANE transcripts
@@ -176,5 +210,14 @@ Please do make these selections independently. Here is a session to compare your
 		   > .exit
 		 ```
 
+	  - Verify the counts 
+		```sh scripts/verify_mane_select.sh```
 
+	  Here is the output from the latest run:
+	  ```
+	  	IS MANE SELECT
+		gencode|GRCh38||189384
+		gencode|GRCh38|true|61815
+		refseq|GRCh38||155012
+		```
 

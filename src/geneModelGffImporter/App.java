@@ -12,18 +12,18 @@ import java.sql.*;
 
 public class App {
 
-	private static String gffFileName     = "/Users/tony/work/gene.model.db/data/refseq/GRCh38_latest_genomic.gff";
-	private static String geneModelSource = "refseq";  // refseq or gencode
-	private static String build           = "GRCh38";  // GRCh37 or GRCh38
+	private static String gffFileName     = "";
+	private static String geneModelSource = "";  // refseq or gencode
+	private static String build           = "";  // GRCh37 or GRCh38
 
 	private static String dbName          = "gene.iobio.db";
 	private static String species         = "homo_sapiens";
 
 	private static String ID     = "ID";
-	private static String Gene_name       = geneModelSource.equals("refseq") ?  "Name" : "gene_name";
-	private static String Transcript_id   = geneModelSource.equals("refseq") ?  "Name" : "transcript_id";
-	private static String Gene_type       = geneModelSource.equals("refseq") ?  "type" : "gene_type";
-	private static String Transcript_type = geneModelSource.equals("refseq") ?  "type" : "transcript_type";
+	private static String Gene_name       = null;
+	private static String Transcript_id   = null;
+	private static String Gene_type       = null;
+	private static String Transcript_type = null;
 	private static String Alias  = "Alias";
 	private static String Parent = "Parent";
 	private static String Target = "Target";
@@ -33,7 +33,7 @@ public class App {
 	private static String dbxref = "Dbxref";
 	private static String Ontology_term = "Ontology_term";
 
-	private static String chrHeaderRec = geneModelSource.equals("refseq") ? "##sequence-region NC" : "##sequence-region chr";
+	private static String chrHeaderRec = null;
 
 	private static HashMap<String, String> genePrefixMap = new HashMap<String, String>();
 	private static HashMap<String, String> transcriptPrefixMap = new HashMap<String, String>();
@@ -41,6 +41,21 @@ public class App {
 	private static HashMap<String, String> seqIdMap = new HashMap<String, String>();
 
 	public static void main(String[] args) {
+		if (args.length < 3) {
+			System.out.println("Specify the command line args: source build gffFileName");
+			return;
+		}
+
+		geneModelSource = args[0];
+		build = args[1];
+		gffFileName = args[2];
+
+		Gene_name       = geneModelSource.equals("refseq") ?  "Name" : "gene_name";
+		Transcript_id   = geneModelSource.equals("refseq") ?  "Name" : "transcript_id";
+		Gene_type       = geneModelSource.equals("refseq") ?  "type" : "gene_type";
+		Transcript_type = geneModelSource.equals("refseq") ?  "type" : "transcript_type";
+		chrHeaderRec = geneModelSource.equals("refseq") ? "##sequence-region NC" : "##sequence-region chr";
+
 		initMaps();
 
 		TreeMap<String, Feature> refMap = new TreeMap<String, Feature>();

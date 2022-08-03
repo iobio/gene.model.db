@@ -1,5 +1,5 @@
 var sqlite3 = require('sqlite3').verbose();
-var db      = new sqlite3.Database('/users/tony/work/gene.model.db/data/gene.iobio.db');
+var db      = new sqlite3.Database('./gene.iobio.db');
 var extend  = require('node.extend');
 
 if (process.argv.length < 5) {

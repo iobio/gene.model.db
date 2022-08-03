@@ -6,7 +6,7 @@ for i in "${refs[@]}"
 do
    :
    # run determineUTR.js for each chromosome
-   node determineUTR.js $i gencode GRCh37
+   node scripts/determineUTR.js $i gencode GRCh37
 done
 
 
@@ -15,7 +15,7 @@ for i in "${refs[@]}"
 do
    :
    # run determineUTR.js for each chromosome
-   node determineUTR.js $i gencode GRCh38
+   node scripts/determineUTR.js $i gencode GRCh38
 done
 
 echo "refseq GRCh37"
@@ -23,15 +23,22 @@ for i in "${refs[@]}"
 do
    :
    # run determineUTR.js for each chromosome
-   node determineUTR.js $i refseq GRCh37
+   node scripts/determineUTR.js $i refseq GRCh37
 done
-node determineUTR.js other refseq GRCh37
+node scripts/determineUTR.js other refseq GRCh37
 
 echo "refseq GRCh38"
 for i in "${refs[@]}"
 do
    :
    # run determineUTR.js for each chromosome
-   node determineUTR.js $i refseq GRCh38
+   node scripts/determineUTR.js $i refseq GRCh38
 done
-node determineUTR.js other refseq GRCh38
+node scripts/determineUTR.js other refseq GRCh38
+
+
+
+# Run query to show that UTRs were inserted into features of a transcript
+echo "select features from transcripts where gene_name == 'RAI1' and transcript_id like '%3533%';" > temp.sql
+sqlite3 gene.iobio.db | grep UTR
+rm temp.sql
