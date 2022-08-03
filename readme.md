@@ -218,11 +218,11 @@ These are the steps involved in creating the gene.iobio.db
       > .exit
       ```
 
-	  - Verify the counts 
+    - Verify the counts 
       ```
       sh scripts/verify_mane_select.sh
       ```
-	  Here is the output from the latest run:
+	   Here is the output from the latest run:
       ```
       IS MANE SELECT
       gencode|GRCh38||189384
