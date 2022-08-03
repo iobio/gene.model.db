@@ -1,6 +1,6 @@
 These are the steps involved in creating the gene.iobio.db
 
-1. Install sqlite3. https://www.sqlite.org/download.html
+1. Install [sqlite3](https://www.sqlite.org/download.html).
 
 2.  Create the schema for gene.iobio.db by running sql/schema.ddl in sqlite3.  
 	```
@@ -32,11 +32,10 @@ These are the steps involved in creating the gene.iobio.db
       ```
     -  After the import, the script will output the gene counts by source and build. Verify that the gene counts look correct. Here is the output from the most
     recent run:
-      ```
-    		 gencode|GRCh37|63641
-			 gencode|GRCh38|61815
-			 refseq|GRCh37|31508
-			 refseq|GRCh38|47757
+      ```gencode|GRCh37|63641
+			gencode|GRCh38|61815
+			refseq|GRCh37|31508
+			refseq|GRCh38|47757
 		```
 
 
