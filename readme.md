@@ -145,28 +145,27 @@ These are the steps involved in creating the gene.iobio.db
 		- First, update the .sql script .import lines to reference the files that you downloaded in the ./data/canonical directory
 		- Make sure you are in the root directory where the gene.iobio.db file resides
 		- Run the sql script
-		```sqlite3 gene.iobio.db 
-		```
-
-		 ```
-		   > (copy and paste contents of sql/update_transcripts_for_canonical.sql here)
-		   > .exit
-		 ```
+        ```
+        sqlite3 gene.iobio.db 
+        ```
+        ```
+        > (copy and paste contents of sql/update_transcripts_for_canonical.sql here)
+        > .exit
+        ```
 
 	- Verify the counts 
-		```sh scripts/verify_canonical.sh```
+       ```
+       sh scripts/verify_canonical.sh
+       ```
 
 	  Here is the output from the latest run, showing ~62,000 transcripts for build GRCh38 flagged as canonical and ~200 transcripts for build GRCh37 with a CCDS id.:
-	  ```
-	  	IS CANONICAL
-		gencode|GRCh38||189384
-		gencode|GRCh38|true|61815
-		CCDS_ID
-		gencode|GRCh37|207
-		```
-
-
-
+      ```
+      IS CANONICAL
+      gencode|GRCh38||189384
+      gencode|GRCh38|true|61815
+      CCDS_ID
+      gencode|GRCh37|207
+      ```
 
 6.  Update the xref tables to map gencode transcripts to refseq transcripts
     -  For GRCh38, use UCSC table browser. 
@@ -181,25 +180,26 @@ These are the steps involved in creating the gene.iobio.db
 		</p>    
     -  Use excel to convert tsv to csv
     -  Now run sql script insert_transcripts_xref.sql in gene.iobio.db
-      ```cd ..
-		   sqlite3 gene.iobio.db 
-		 ```
-		 ```
-		   > (copy and paste contents of ./sql/insert_transcripts_xref.sql here)
-		   > .exit
-		 ```
+       ```
+       sqlite3 gene.iobio.db 
+       ```
+       ```
+       > (copy and paste contents of ./sql/insert_transcripts_xref.sql here)
+       > .exit
+       ```
  	- Verify the counts 
-		```sh scripts/verify_transcripts_xref.sh```
-
-	  Here is the output from the latest run:
-	  ```
-	   XREF GENCODE -> REFSEQ
-		gencode|GRCh37|33407
-		gencode|GRCh38|21233
-		XREF REFSEQ -> GENCODE
-		refseq|GRCh37|34944
-		refseq|GRCh38|68295
-	  ```
+       ```
+       sh scripts/verify_transcripts_xref.sh
+       ```
+       Here is the output from the latest run:
+       ```
+       XREF GENCODE -> REFSEQ
+       gencode|GRCh37|33407
+       gencode|GRCh38|21233
+       XREF REFSEQ -> GENCODE
+       refseq|GRCh37|34944
+       refseq|GRCh38|68295
+       ```
 
 	  
 
@@ -207,25 +207,28 @@ These are the steps involved in creating the gene.iobio.db
  7.  Record MANE transcripts
     - Download the MANE gff from https://ftp.ncbi.nlm.nih.gov/refseq/MANE/MANE_human/
     - Extract the transcript lines from the 'gff', passing in the path to the MANE gff
-      ```sh scripts/extract_mane_transcripts.sh data/mane/MANE.GRCh38.v1.0.ensembl_genomic.gff > data/mane/transcripts.csv``
+      ```
+      sh scripts/extract_mane_transcripts.sh data/mane/MANE.GRCh38.v1.0.ensembl_genomic.gff > data/mane/transcripts.csv
+      ```
     - Run sql script sql/update_mane_transcripts.sql which will update is_mane_select for GRCh38 transcripts. 
-		```
-		   sqlite3 gene.iobio.db 
-		```
+      ```
+      sqlite3 gene.iobio.db 
+      ```
 		 
-		```
-		   > (copy and paste contents of ./sql/update_mane_transcripts.sql here)
-		   > .exit
-		```
+      ```
+      > (copy and paste contents of ./sql/update_mane_transcripts.sql here)
+      > .exit
+      ```
 
 	  - Verify the counts 
-		```sh scripts/verify_mane_select.sh```
-
+      ```
+      sh scripts/verify_mane_select.sh
+      ```
 	  Here is the output from the latest run:
-	  ```
-	  	IS MANE SELECT
-		gencode|GRCh38||189384
-		gencode|GRCh38|true|61815
-		refseq|GRCh38||155012
-		```
+      ```
+      IS MANE SELECT
+      gencode|GRCh38||189384
+      gencode|GRCh38|true|61815
+      refseq|GRCh38||155012
+      ```
 
