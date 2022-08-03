@@ -65,7 +65,7 @@ These are the steps involved in creating the gene.iobio.db
     For build GRCh38, there is a is_canonical flag that can be used.  This flag can be found using
     the UCSC table browser.  
     How to get canonical and ccsd flags on transcripts:
-	-  For GRCh38, you can get the canonical designation for a transcript using the UCSC 
+    -  For GRCh38, you can get the canonical designation for a transcript using the UCSC 
 	    table browser, use instructions outlined [here](https://groups.google.com/a/soe.ucsc.edu/forum/#!topic/genome/_6asF5KciPc)
 
 
@@ -133,18 +133,18 @@ These are the steps involved in creating the gene.iobio.db
 		Please do make these selections independently. Here is a session to compare your steps against to help see the output: http://genome.ucsc.edu/cgi-bin/hgTables?hgS_doOtherUser=submit&hgS_otherUserName=Brian%20Lee&hgS_otherUserSessionName=hg38.refGene.canonical
 		```
 
-- 	Remember to join to tables to get the gencode transcript id (align id)
-	-  Use excel to convert tsv to csv
-	-  For GRCh37, you can get the ccds_id from the UCSC table browser, using a similar technique described above. 
+        - Remember to join to tables to get the gencode transcript id (align id)
+        - Use excel to convert tsv to csv
+    -  For GRCh37, you can get the ccds_id from the UCSC table browser, using a similar technique described above. 
 	<p align="center">
 		  <img src="doc/howto_ccds_GRCh37_ucsc_browser.png" width="350"/>
 	</p>
 	 
-	-  Use excel to convert tsv to csv
-	-  Run sql script sql/update_transcripts_for_canonical.sql which will update both the is_canonical for GRCh38 transcripts and the ccds_id for GRCh37 transcripts. 
-		- First, update the .sql script .import lines to reference the files that you downloaded in the ./data/canonical directory
-		- Make sure you are in the root directory where the gene.iobio.db file resides
-		- Run the sql script
+    -  Use excel to convert tsv to csv
+    -  Run sql script sql/update_transcripts_for_canonical.sql which will update both the is_canonical for GRCh38 transcripts and the ccds_id for GRCh37 transcripts. 
+        - First, update the .sql script .import lines to reference the files that you downloaded in the ./data/canonical directory
+        - Make sure you are in the root directory where the gene.iobio.db file resides
+        - Run the sql script
         ```
         sqlite3 gene.iobio.db 
         ```
