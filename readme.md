@@ -41,19 +41,22 @@ These are the steps involved in creating the gene.iobio.db
 4. Update the gene.iobio.db transcripts table to specify the UTR features, which are not included in the GFF3, 
    but can be determined by reading the EXON and CDS features.
    -  This is a long running update statement, so it works better to update one reference (for a build) at a time.
-   -  Run the bash shell script ./scripts/determineUTR.sh which will run the node.js script to perform the updates.
-      ```sh scripts/determineUTR.sh
+   -  Run the bash shell script to update the features to include the UTRs.
+      ```
+      sh scripts/determineUTR.sh
       ```
 
       When this script finished, both build GRCh37 and GRCh38 will be updated.  Update the .sh script if you
       want to run the updates on other builds.
 
     - Verify that the UTRs are now present in the features of the transcript
-      ```sh scripts/verifyUTR.sh```
+      ```
+      sh scripts/verifyUTR.sh
+      ```
       You should see 2 lines for the UTR features of the canonical transcript for gene RAI1
       ```
       "feature_type":"UTR"
-		"feature_type":"UTR"
+      "feature_type":"UTR"
       ```
 
 
