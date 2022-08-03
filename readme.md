@@ -8,26 +8,28 @@ These are the steps involved in creating the gene.iobio.db
 	```
 
 3.  Download and uncompress the gff3 files for Gencode and RefSeq (Ensembl) for GRCh37 and GRCh38. These files go in the data/gencode and data/refseq directories respectively. 
-	- Gencode https://www.gencodegenes.org/human/
-	    - GRCh37 https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_41/GRCh37_mapping/gencode.v41lift37.annotation.gff3.gz
-		- GRCh38 https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_41/gencode.v41.annotation.gff3.gz
+	- [Gencode](https://www.gencodegenes.org/human/)
+	    - [GRCh37](https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_41/GRCh37_mapping/gencode.v41lift37.annotation.gff3.gz)
+		- [GRCh38](https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_41/gencode.v41.annotation.gff3.gz)
 	- RefSeq
-		- GRCh37 https://ftp.ncbi.nlm.nih.gov/refseq/H_sapiens/annotation/GRCh37_latest/refseq_identifiers/GRCh37_latest_genomic.gff.gz
-		- GRCh38 https://ftp.ncbi.nlm.nih.gov/refseq/H_sapiens/annotation/GRCh38_latest/refseq_identifiers/GRCh38_latest_genomic.gff.gz
+		- [GRCh37](https://ftp.ncbi.nlm.nih.gov/refseq/H_sapiens/annotation/GRCh37_latest/refseq_identifiers/GRCh37_latest_genomic.gff.gz)
+		- [GRCh38](https://ftp.ncbi.nlm.nih.gov/refseq/H_sapiens/annotation/GRCh38_latest/refseq_identifiers/GRCh38_latest_genomic.gff.gz)
  
 
 4.  Populate the gene.iobio.db from the gff3 files for each genome build
     
     -  Compile the java app.  
-       - Install Java JDK https://www.oracle.com/java/technologies/downloads/
-       - Install Apache Maven https://maven.apache.org/
+       - Install [Java JDK](https://www.oracle.com/java/technologies/downloads/)
+       - Install [Apache Maven](https://maven.apache.org/)
        - From the command line, build the project
        ```
        mvn install
        ```
        - The class files will be created in the target/classes directory.
     -  Execute scripts/run_gff_importer.sh, which will import the gffs for each build an source. (This should take approximately 5 mins for each source/build to run)
-      ```sh scripts/run_gff_importer.sh```
+      ```
+      sh scripts/run_gff_importer.sh
+      ```
     -  After the import, the script will output the gene counts by source and build. Verify that the gene counts look correct. Here is the output from the most
     recent run:
       ```
