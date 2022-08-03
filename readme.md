@@ -3,7 +3,9 @@ These are the steps involved in creating the gene.iobio.db
 1. Install sqlite3. https://www.sqlite.org/download.html
 
 2.  Create the schema for gene.iobio.db by running sql/schema.ddl in sqlite3.  
-	```sqlite3 gene.iobio.db < sql/schema.ddl```
+	```
+	   sqlite3 gene.iobio.db < sql/schema.ddl
+	```
 
 3.  Download and uncompress the gff3 files for Gencode and RefSeq (Ensembl) for GRCh37 and GRCh38. These files go in the data/gencode and data/refseq directories respectively. 
 	- Gencode https://www.gencodegenes.org/human/
@@ -20,18 +22,20 @@ These are the steps involved in creating the gene.iobio.db
        - Install Java JDK https://www.oracle.com/java/technologies/downloads/
        - Install Apache Maven https://maven.apache.org/
        - From the command line, build the project
-       ```mvn install```
+       ```
+       mvn install
+       ```
        - The class files will be created in the target/classes directory.
     -  Execute scripts/run_gff_importer.sh, which will import the gffs for each build an source. (This should take approximately 5 mins for each source/build to run)
       ```sh scripts/run_gff_importer.sh```
     -  After the import, the script will output the gene counts by source and build. Verify that the gene counts look correct. Here is the output from the most
     recent run:
-    ```
+
     	gencode|GRCh37|63641
 		gencode|GRCh38|61815
 		refseq|GRCh37|31508
 		refseq|GRCh38|47757
-    ```
+
 
 
 4. Update the gene.iobio.db transcripts table to specify the UTR features, which are not included in the GFF3, 
@@ -193,6 +197,7 @@ Please do make these selections independently. Here is a session to compare your
 		XREF REFSEQ -> GENCODE
 		refseq|GRCh37|34944
 		refseq|GRCh38|68295
+	  ```
 
 	  
 
@@ -202,13 +207,14 @@ Please do make these selections independently. Here is a session to compare your
     - Extract the transcript lines from the 'gff', passing in the path to the MANE gff
       ```sh scripts/extract_mane_transcripts.sh data/mane/MANE.GRCh38.v1.0.ensembl_genomic.gff > data/mane/transcripts.csv``
     - Run sql script sql/update_mane_transcripts.sql which will update is_mane_select for GRCh38 transcripts. 
-		```cd ..
+		```
 		   sqlite3 gene.iobio.db 
-		 ```
-		 ```
+		```
+		 
+		```
 		   > (copy and paste contents of ./sql/update_mane_transcripts.sql here)
 		   > .exit
-		 ```
+		```
 
 	  - Verify the counts 
 		```sh scripts/verify_mane_select.sh```
