@@ -40,3 +40,5 @@ WHERE
         AND transcripts.build = 'GRCh38'  and transcripts.source = 'refseq'
     ) ; 
 
+drop table mane_transcripts;
+

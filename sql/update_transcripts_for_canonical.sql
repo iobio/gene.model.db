@@ -35,14 +35,15 @@ SET
       is_canonical = (SELECT 'true'
                             FROM gencode_grch38_transcript_canonical
                             WHERE gencode_grch38_transcript_canonical.transcript_id = transcripts.transcript_id
-                            AND transcripts.build = 'GRCh38'  and transcripts.source = 'refseq')
+                            AND transcripts.build = 'GRCh38'  and transcripts.source = 'gencode')
 
 WHERE
     EXISTS (
         SELECT *
         FROM gencode_grch38_transcript_canonical
         WHERE gencode_grch38_transcript_canonical.transcript_id = transcripts.transcript_id 
-        AND transcripts.build = 'GRCh38'  and transcripts.source = 'refseq'
+        AND transcripts.build = 'GRCh38'  and transcripts.source = 'gencode'
     ) ;     
 
-
+drop table gencode_grch37_transcript_ccds;
+drop table gencode_grch38_transcript_canonical;

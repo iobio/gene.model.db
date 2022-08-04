@@ -38,7 +38,4 @@ node scripts/determineUTR.js other refseq GRCh38
 
 
 
-# Run query to show that UTRs were inserted into features of a transcript
-echo "select features from transcripts where gene_name == 'RAI1' and transcript_id like '%3533%';" > temp.sql
-sqlite3 gene.iobio.db | grep UTR
-rm temp.sql
+
