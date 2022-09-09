@@ -262,4 +262,6 @@ These are the steps involved in creating the gene.iobio.db
      ```
      cp genes.json ../gene.iobio/client/data
      ```
+   - The python script also creates a json file that shows genes that do not have valid chromosomes. This file is not used at this time.
+     ```more genes_invalid.json```
 
