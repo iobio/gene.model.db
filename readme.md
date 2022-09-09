@@ -213,7 +213,7 @@ These are the steps involved in creating the gene.iobio.db
        ```
  	- Verify the counts 
        ```
-       sh scripts/verify_transcripts_xref.sh
+       sh scripts/verify_xref_transcript.sh
        ```
        Here is the output from the latest run:
        ```
@@ -253,4 +253,13 @@ These are the steps involved in creating the gene.iobio.db
       gencode|GRCh38|true|61815
       refseq|GRCh38||155012
       ```
+8. Create a genes.json file that populate the genes typeahead search in gene.iobio
+   - Run the python program that reads the gene.iobio.db database and creates a json file
+     ```
+     python src/load_genes_json.py
+     ```
+   - To refresh the genes typeahead in gene.iobio, clone the github repo for gene.iobio and copy the genes.json file to gene.iobio/client/app
+     ```
+     cp genes.json ../gene.iobio/client/app
+     ```
 

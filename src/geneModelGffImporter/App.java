@@ -170,6 +170,7 @@ public class App {
 			seqIdMap.put("NC_000024.9", "chrY");
 			seqIdMap.put("NC_012920.1", "chrMT");
 
+
 			seqIdMap.put("NT_113878.1", "chr1_gl000191_random");
 			seqIdMap.put("NT_167207.1", "chr1_gl000192_random");
 			seqIdMap.put("NT_113885.1", "chr4_gl000193_random");
@@ -888,119 +889,135 @@ public class App {
 	static void loadData(Connection conn, Map<String, Feature>geneMap, Map<String, Feature>transcriptMap) {
 		for( String geneId : geneMap.keySet()) {
 			Feature gene = geneMap.get(geneId);
-			insertGene(conn, gene);
-			for (Feature tx : gene.childFeatures) {
-				Feature transcript = transcriptMap.get(tx.attributeMap.get(ID));
-				if (transcript != null) {
-					insertTranscript(conn, gene, transcript);
-				} else {
-					System.err.println("Cannot find transcript " + tx.attributeMap.get(ID) + " " + tx.attributeMap.get(Transcript_id) + " " + tx.attributeMap.get(Parent));
+			Boolean success = insertGene(conn, gene);
+			if (success) {
+				for (Feature tx : gene.childFeatures) {
+					Feature transcript = transcriptMap.get(tx.attributeMap.get(ID));
+					if (transcript != null) {
+						insertTranscript(conn, gene, transcript);
+					} else {
+						System.err.println("Cannot find transcript " + tx.attributeMap.get(ID) + " " + tx.attributeMap.get(Transcript_id) + " " + tx.attributeMap.get(Parent));
+					}
 				}
 			}
 		}
 	}
 
-	static void insertGene(Connection conn, Feature gene) {
-		System.out.println("inserting gene " + gene.attributeMap.get(Gene_name));
+	static boolean insertGene(Connection conn, Feature gene) {
+		//System.out.println("inserting gene " + gene.attributeMap.get(Gene_name));
 		String chr = geneModelSource.equals("refseq") ? seqIdMap.get(gene.seqid) : gene.seqid;
-		String transcripts = "";
-		for (Feature transcript : gene.childFeatures) {
-			if (transcripts.length() == 0) {
-				transcripts += "[";
-			} else {
-				transcripts += ",";
+		if (chr != null) {
+			String transcripts = "";
+			for (Feature transcript : gene.childFeatures) {
+				if (transcripts.length() == 0) {
+					transcripts += "[";
+				} else {
+					transcripts += ",";
+				}
+				transcripts += "\"" + transcript.attributeMap.get(Transcript_id) + "\"";
 			}
-			transcripts += "\"" + transcript.attributeMap.get(Transcript_id) + "\"";
-		}
-		if (transcripts.length() > 0) {
-			transcripts += "]";
-		}
-		Statement stmt;
-		try {
-			stmt = conn.createStatement();
-			String sql = "INSERT INTO genes "
-		      		+ " (chr, seqid, annotation_source, feature_type, start, end, score, strand, phase, gene_name, gene_type, gene_status, level, transcripts, source, species, build) "
-		            + "VALUES ("
-		      		+ "'" + chr + "'" + ","
-		      		+ "'" + gene.seqid + "'" + ","
-		      		+ "'" + gene.source + "'" + ","
-		      		+ "'gene'" + ","
-		      		+ gene.start + ","
-		      		+ gene.end +  ","
-		      		+ "\".\"" + ","  // score
-		      		+ "'" + gene.strand + "'" + ","
-		      		+ "'" + gene.phase + "'" + ","
-		      		+ "'" + gene.attributeMap.get(Gene_name) + "'" + ","
-		      		+ "'" + (gene.type == null ? "" : gene.attributeMap.get(Gene_type)) + "'" + ","      // gene type
-		      		+ "\".\"" + "," //status
-		      		+ "\".\"" + "," // level
-		      		+ "'" + transcripts + "'"  + ","
-		      		+ "'" + geneModelSource + "'"  + ","
-		      		+ "'" + species + "'"  + ","
-		      		+ "'" + build + "'"
-		            + ");";
-		    stmt.executeUpdate(sql);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			if (transcripts.length() > 0) {
+				transcripts += "]";
+			}
+			Statement stmt;
+			try {
+				stmt = conn.createStatement();
+				String sql = "INSERT INTO genes "
+			      		+ " (chr, seqid, annotation_source, feature_type, start, end, score, strand, phase, gene_name, gene_type, gene_status, level, transcripts, source, species, build) "
+			            + "VALUES ("
+			      		+ "'" + chr + "'" + ","
+			      		+ "'" + gene.seqid + "'" + ","
+			      		+ "'" + gene.source + "'" + ","
+			      		+ "'gene'" + ","
+			      		+ gene.start + ","
+			      		+ gene.end +  ","
+			      		+ "\".\"" + ","  // score
+			      		+ "'" + gene.strand + "'" + ","
+			      		+ "'" + gene.phase + "'" + ","
+			      		+ "'" + gene.attributeMap.get(Gene_name) + "'" + ","
+			      		+ "'" + (gene.type == null ? "" : gene.attributeMap.get(Gene_type)) + "'" + ","      // gene type
+			      		+ "\".\"" + "," //status
+			      		+ "\".\"" + "," // level
+			      		+ "'" + transcripts + "'"  + ","
+			      		+ "'" + geneModelSource + "'"  + ","
+			      		+ "'" + species + "'"  + ","
+			      		+ "'" + build + "'"
+			            + ");";
+			    stmt.executeUpdate(sql);
+			    return true;
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return false;
+			}
+
+
+		} else {
+			return false;
 		}
 
 	}
 
-	static void insertTranscript(Connection conn, Feature gene, Feature transcript) {
+	static boolean insertTranscript(Connection conn, Feature gene, Feature transcript) {
 		String features = "";
-		for (Feature feature : transcript.childFeatures) {
-			if (features.length() == 0) {
-				features += "[";
-			} else {
-				features += ",";
+		String chr = geneModelSource.equals("refseq") ? seqIdMap.get(transcript.seqid) : transcript.seqid;
+		if (chr != null) {
+			for (Feature feature : transcript.childFeatures) {
+				if (features.length() == 0) {
+					features += "[";
+				} else {
+					features += ",";
+				}
+				features += "{\"chr\":" + "\"" + chr + "\","
+						 +  "\"seqid\":" + "\"" + feature.seqid + "\","
+						 +  "\"annotation_source\":" + "\"" + feature.source + "\","
+						 +  "\"feature_type\":" + "\"" + feature.type + "\","
+						 +  "\"start\":" + "\"" + feature.start + "\","
+						 +  "\"end\":" + "\"" + feature.end + "\","
+						 +  "\"score\":" + "\"" + "." + "\","
+						 +  "\"strand\":" + "\"" + feature.strand + "\","
+						 +  "\"phase\":" + "\"" + feature.phase + "\","
+						 +  "\"transcript_id\":" + "\"" + transcript.attributeMap.get(Transcript_id) + "\"}";
 			}
-			String chr = geneModelSource.equals("refseq") ? seqIdMap.get(transcript.seqid) : transcript.seqid;
-			features += "{\"chr\":" + "\"" + chr + "\","
-					 +  "\"seqid\":" + "\"" + feature.seqid + "\","
-					 +  "\"annotation_source\":" + "\"" + feature.source + "\","
-					 +  "\"feature_type\":" + "\"" + feature.type + "\","
-					 +  "\"start\":" + "\"" + feature.start + "\","
-					 +  "\"end\":" + "\"" + feature.end + "\","
-					 +  "\"score\":" + "\"" + "." + "\","
-					 +  "\"strand\":" + "\"" + feature.strand + "\","
-					 +  "\"phase\":" + "\"" + feature.phase + "\","
-					 +  "\"transcript_id\":" + "\"" + transcript.attributeMap.get(Transcript_id) + "\"}";
-		}
-		if (features.length() > 0) {
-			features += "]";
-		}
-		Statement stmt;
-		try {
-			System.out.println("   transcript " + transcript.attributeMap.get(Transcript_id));
-			String chr = geneModelSource.equals("refseq") ? seqIdMap.get(transcript.seqid) : transcript.seqid;
-			stmt = conn.createStatement();
-			String sql = "INSERT INTO transcripts "
-		      		+ " (chr, seqid, annotation_source, feature_type, start, end, score, strand, phase, transcript_id, gene_name, transcript_type, transcript_status, level, features, source, species, build) "
-		            + "VALUES ("
-		      		+ "'" + chr + "'" + ","
-		      		+ "'" + transcript.seqid + "'" + ","
-		      		+ "'" + transcript.source + "'" + ","
-		      		+ "'" + "transcript" + "'" + ","
-		      		+ transcript.start + ","
-		      		+ transcript.end +  ","
-		      		+ "\".\"" + ","  // score
-		      		+ "'" + transcript.strand + "'" + ","
-		      		+ "'" + transcript.phase + "'" + ","
-		      		+ "'" + transcript.attributeMap.get(Transcript_id) + "'" + ","
-		      		+ "'" + gene.attributeMap.get(Gene_name) + "'" + ","
-		      		+ "'" + transcript.attributeMap.get(Transcript_type) + "'" + ","
-		      		+ "\".\"" + "," //status
-		      		+ "\".\"" + "," // level
-		      		+ "'" + features + "'"  + ","
-		      		+ "'" + geneModelSource + "'"  + ","
-		      		+ "'" + species + "'"  + ","
-		      		+ "'" + build + "'"
-		      		+ ");";
-		    stmt.executeUpdate(sql);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			if (features.length() > 0) {
+				features += "]";
+			}
+			Statement stmt;
+			try {
+				//System.out.println("   transcript " + transcript.attributeMap.get(Transcript_id));
+				stmt = conn.createStatement();
+				String sql = "INSERT INTO transcripts "
+			      		+ " (chr, seqid, annotation_source, feature_type, start, end, score, strand, phase, transcript_id, gene_name, transcript_type, transcript_status, level, features, source, species, build) "
+			            + "VALUES ("
+			      		+ "'" + chr + "'" + ","
+			      		+ "'" + transcript.seqid + "'" + ","
+			      		+ "'" + transcript.source + "'" + ","
+			      		+ "'" + "transcript" + "'" + ","
+			      		+ transcript.start + ","
+			      		+ transcript.end +  ","
+			      		+ "\".\"" + ","  // score
+			      		+ "'" + transcript.strand + "'" + ","
+			      		+ "'" + transcript.phase + "'" + ","
+			      		+ "'" + transcript.attributeMap.get(Transcript_id) + "'" + ","
+			      		+ "'" + gene.attributeMap.get(Gene_name) + "'" + ","
+			      		+ "'" + transcript.attributeMap.get(Transcript_type) + "'" + ","
+			      		+ "\".\"" + "," //status
+			      		+ "\".\"" + "," // level
+			      		+ "'" + features + "'"  + ","
+			      		+ "'" + geneModelSource + "'"  + ","
+			      		+ "'" + species + "'"  + ","
+			      		+ "'" + build + "'"
+			      		+ ");";
+			    stmt.executeUpdate(sql);
+			    return true;
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return false;
+			}
+
+		} else {
+			return false;
 		}
 
 	}
