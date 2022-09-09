@@ -258,8 +258,8 @@ These are the steps involved in creating the gene.iobio.db
      ```
      python src/load_genes_json.py
      ```
-   - To refresh the genes typeahead in gene.iobio, clone the github repo for gene.iobio and copy the genes.json file to gene.iobio/client/app
+   - To refresh the genes typeahead in gene.iobio, clone the github repo for gene.iobio and copy the genes.json file to the appropriate directory.
      ```
-     cp genes.json ../gene.iobio/client/app
+     cp genes.json ../gene.iobio/client/data
      ```
 
