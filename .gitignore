@@ -1,2 +1,8 @@
 gff3
 target
+gene.iobio.db
+genes.json
+data/gencode/*.gff3
+data/refseq/*.gff
+data/mane/*.gff
+data/mane/MANE.GRCh38.v1.0.genes_not_in_mane.txt
