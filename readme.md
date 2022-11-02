@@ -9,7 +9,7 @@ These are the steps involved in creating the gene.iobio.db
 
 3.  Download and uncompress the gff3 files for Gencode and RefSeq (Ensembl) for GRCh37 and GRCh38. These files go in the data/gencode and data/refseq directories respectively. 
 	- [Gencode](https://www.gencodegenes.org/human/)
-	    - [GRCh37](https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_41/GRCh37_mapping/gencode.v41lift37.annotation.gff3.gz)
+	    - [GRCh37](https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_19/gencode.v19.annotation.gff3.gz)
 		- [GRCh38](https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_41/gencode.v41.annotation.gff3.gz)
 	- RefSeq
 		- [GRCh37](https://ftp.ncbi.nlm.nih.gov/refseq/H_sapiens/annotation/GRCh37_latest/refseq_identifiers/GRCh37_latest_genomic.gff.gz)
@@ -37,13 +37,13 @@ These are the steps involved in creating the gene.iobio.db
 
      ```  
      GENE COUNTS
-     gencode|GRCh37|63641
+     gencode|GRCh37|57783
      gencode|GRCh38|61815
      refseq|GRCh37|31508
      refseq|GRCh38|47757
 
      TRANSCRIPT COUNTS
-     gencode|GRCh37|252748
+     gencode|GRCh37|196483
      gencode|GRCh38|251199
      refseq|GRCh37|81768
      refseq|GRCh38|155012
@@ -71,13 +71,13 @@ These are the steps involved in creating the gene.iobio.db
       "feature_type":"UTR"
 
       Number of transcripts 
-      gencode|GRCh37|252748
+      gencode|GRCh37|196483
       gencode|GRCh38|251199
       refseq|GRCh37|81768
       refseq|GRCh38|155012
 
       Number of transcripts with UTR features
-      gencode|GRCh37|248655
+      gencode|GRCh37|192230
       gencode|GRCh38|247158
       refseq|GRCh37|81458
       refseq|GRCh38|154587
@@ -188,7 +188,7 @@ These are the steps involved in creating the gene.iobio.db
       gencode|GRCh38||189384
       gencode|GRCh38|true|61815
       CCDS_ID
-      gencode|GRCh37|207
+      gencode|GRCh37|36379
       ```
 
 6.  Update the xref tables to map gencode transcripts to refseq transcripts
@@ -213,16 +213,16 @@ These are the steps involved in creating the gene.iobio.db
        ```
  	- Verify the counts 
        ```
-       sh scripts/verify_xref_transcript.sh
+       sh scripts/verify_transcripts_xref.sh
        ```
        Here is the output from the latest run:
        ```
-       XREF GENCODE -> REFSEQ
-       gencode|GRCh37|33407
-       gencode|GRCh38|21233
-       XREF REFSEQ -> GENCODE
-       refseq|GRCh37|34944
-       refseq|GRCh38|68295
+        XREF GENCODE -> REFSEQ
+        gencode|GRCh37|46377
+        gencode|GRCh38|23495
+        XREF REFSEQ -> GENCODE
+        refseq|GRCh37|39496
+        refseq|GRCh38|68295
        ```
 7. Record MANE transcripts
     - Download the MANE gff [here](https://ftp.ncbi.nlm.nih.gov/refseq/MANE/MANE_human/)
@@ -249,19 +249,9 @@ These are the steps involved in creating the gene.iobio.db
 	   Here is the output from the latest run:
       ```
       IS MANE SELECT
-      gencode|GRCh38||189384
-      gencode|GRCh38|true|61815
-      refseq|GRCh38||155012
+      gencode|GRCh38||232120
+      gencode|GRCh38|true|19079
+      refseq|GRCh38||133099
+      refseq|GRCh38|true|21913
       ```
-8. Create a genes.json file that populate the genes typeahead search in gene.iobio
-   - Run the python program that reads the gene.iobio.db database and creates a json file
-     ```
-     python src/load_genes_json.py
-     ```
-   - To refresh the genes typeahead in gene.iobio, clone the github repo for gene.iobio and copy the genes.json file to the appropriate directory.
-     ```
-     cp genes.json ../gene.iobio/client/data
-     ```
-   - The python script also creates a json file that shows genes that do not have valid chromosomes. This file is not used at this time.
-     ```more genes_invalid.json```
 
