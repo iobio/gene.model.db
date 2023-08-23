@@ -1,0 +1,7 @@
+gene.iobio.db
+gene.iobio.db-journal
+data
+.ipynb_checkpoints
+__pycache__
+*.ipynbd
+.env
