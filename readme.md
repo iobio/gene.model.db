@@ -1,3 +1,5 @@
+IMPORTANT: This is a deprecated repository. The new repo is geneinfo.db https://github.com/iobio/geneinfo.db 
+
 These are the steps involved in creating the gene.iobio.db
 
 1. Install [sqlite3](https://www.sqlite.org/download.html).
